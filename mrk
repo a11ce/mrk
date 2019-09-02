@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+
+def color(r,g,b):
+    return "\033[38;2;" + str(r) + ";" + str(g) + ";" + str(b) + "m"
+
+colors = ["\033[39m"]
+colors.extend([color(*x) for x in [
+            (181,244,246) # line number
+         ]])
+
+MRKDIR = os.path.expanduser("~/.mrk/")
+def main():
+    os.chdir(MRKDIR)
+    sortedFiles = sorted(os.listdir(), key=creationTime)
+    
+    if(len(sys.argv) == 1):
+        
+        for ind,fName in reversed(list(enumerate(sortedFiles))):
+            print(colors[1] + "{0}{1} {2}".format(ind, colors[0],fName))
+
+    elif(sys.argv[1].isdigit()):
+        interEdit(sortedFiles[int(sys.argv[1])])
+
+    else:
+        interEdit(sys.argv[1])
+
+def interEdit(name):
+    if os.path.exists(name):
+        with open(name) as f:
+            lines = [x.strip() for x in f.readlines()]
+    else:
+        lines = []
+
+    for ind, line in enumerate(lines):
+                print(colors[1] + "{0}{1} {2}".format(ind, colors[0], line))
+    
+    unsaved = False
+    
+    while True:
+ 
+        
+        command = input("> ")
+        
+        if command == "q":
+            if unsaved:
+                print("?")
+                unsaved = False
+            else:
+                break
+
+        elif command == "w":
+            writeFile(name,lines)
+            unsaved = False
+
+
+        elif command == "p":
+            for ind, line in enumerate(lines):
+                print(colors[1] + "{0}{1} {2}".format(ind, colors[0], line))
+        
+        elif command == "a":
+            newLine = input()
+            lines.append(newLine)
+            unsaved = True
+
+        elif command[0] == "i":
+            newLine = input()
+            lines.insert(int(command[1:])+1,newLine)
+            unsaved = True
+            
+        elif command[0] == "d":
+            lines.pop(int(command[1:]))
+            unsaved = True
+
+        #print()
+        
+def writeFile(name,lines):
+    with open(name, 'w') as f:
+        for line in lines:
+            f.write("%s\n" % line)        
+
+def creationTime(filename):
+    return os.stat(filename).st_birthtime
+
+    
+if __name__ == "__main__":
+    main()
