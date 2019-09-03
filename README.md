@@ -26,4 +26,5 @@
 --- 
 
 All contributions are welcome by pull request or issue.
-`mrk` is licensed under GNU General Public License v3.0. See [LICENSE](../blob/master/LICENSE) for full text.
+
+`mrk` is licensed under GNU General Public License v3.0. See [LICENSE](../master/LICENSE) for full text.
