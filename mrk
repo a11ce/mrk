@@ -12,8 +12,13 @@ colors.extend([color(*x) for x in [
          ]])
 
 MRKDIR = os.path.expanduser("~/.mrk/")
+
 def main():
+    if not os.path.exists(MRKDIR):
+        os.makedirs(MRKDIR)    
+
     os.chdir(MRKDIR)
+    
     sortedFiles = sorted(os.listdir(), key=creationTime)
     
     if(len(sys.argv) == 1):
