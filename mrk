@@ -48,8 +48,10 @@ def interEdit(name):
  
         
         command = input("> ")
-        
-        if command == "q":
+
+        if command == "":
+            pass
+        elif command == "q":
             if unsaved:
                 print("?")
                 unsaved = False
@@ -78,7 +80,8 @@ def interEdit(name):
         elif command[0] == "d":
             lines.pop(int(command[1:]))
             unsaved = True
-
+        else:
+            print("what?")
         #print()
         
 def writeFile(name,lines):
